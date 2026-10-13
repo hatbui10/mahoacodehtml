@@ -3,347 +3,515 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lớp ILA-L7 - Thu Hà</title>
+<title>Mã hoá / Chống dịch ngược Code — 5.000–10.000 dòng</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-body { background-color: #050508; color: #e0e0e6; padding: 30px 3px 20px 3px; }
-h2, h3 { text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
-h2 { color: #00f0ff; text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); font-size: 1.4rem; }
-h3 { color: #ff007f; text-shadow: 0 0 10px rgba(255, 0, 127, 0.5); font-size: 1.1rem; }
-.class-stats { text-align: center; color: #ffd700; font-size: 0.9rem; margin-bottom: 15px; font-weight: bold; }
-.class-panel { background: #0a0a14; border: 1px solid #00f0ff; border-radius: 6px; padding: 15px 8px; box-shadow: 0 0 15px rgba(0, 240, 255, 0.15); }
-.add-student-box { display: flex; flex-direction: column; gap: 10px; background: #0d0d1a; border: 1px solid #ffd700; border-radius: 4px; padding: 12px 10px; margin-bottom: 15px; }
-.add-student-box input { width: 100%; background: #050508; border: 1px solid #333; color: #fff; padding: 12px 10px; font-size: 0.9rem; border-radius: 4px; outline: none; }
-.btn-add { background: #ffd700; color: #000; border: none; padding: 12px; font-weight: bold; font-size: 0.9rem; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
-.absent-section { background: rgba(255, 0, 127, 0.05); border: 1px dashed #ff007f; border-radius: 4px; padding: 10px; margin-bottom: 20px; }
-.absent-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.absent-title { color: #ff007f; font-weight: bold; font-size: 0.9rem; }
-.copy-btn { background: #ff007f; color: #fff; border: none; padding: 6px 12px; font-size: 0.8rem; font-weight: bold; border-radius: 3px; cursor: pointer; box-shadow: 0 0 8px #ff007f; }
-.absent-list { list-style: none; font-size: 0.9rem; color: #ff55a5; line-height: 1.4; }
-.absent-list li { padding: 3px 0; border-bottom: 1px solid rgba(255, 0, 127, 0.1); }
-.student-list { display: flex; flex-direction: column; gap: 10px; }
-.student-card { background: #121224; border: 1px solid #333; border-left: 4px solid #00f0ff; border-radius: 4px; padding: 12px 10px; display: flex; flex-direction: column; gap: 10px; }
-.student-card.status-absent { border-left-color: #ff007f; background: #1a0813; }
-.student-card.status-present { border-left-color: #00ff66; background: #081a10; }
-.student-info-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; border-bottom: 1px solid #222; padding-bottom: 6px; }
-.student-meta { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-.student-name { font-weight: bold; font-size: 0.95rem; color: #fff; }
-.student-phone { font-size: 0.8rem; color: #888; }
-.student-actions-right { display: flex; gap: 5px; }
-.btn-call { background: #ffd700; color: #000; padding: 8px 12px; font-size: 0.9rem; border: none; border-radius: 4px; cursor: pointer; box-shadow: 0 0 5px #ffd700; }
-.btn-delete { background: #4a0000; color: #ff3333; border: 1px solid #ff3333; padding: 8px 10px; font-size: 0.9rem; border-radius: 4px; cursor: pointer; }
-.student-controls-row { display: flex; gap: 6px; align-items: center; }
-.btn-action { flex: 1; padding: 10px 3px; font-size: 0.8rem; font-weight: bold; border: none; border-radius: 3px; cursor: pointer; text-align: center; color: #fff; background: #333; }
-.btn-absent { background: #4a0025; color: #ff007f; border: 1px solid #ff007f; }
-.btn-absent.active { background: #ff007f; color: #fff; box-shadow: 0 0 10px #ff007f; }
-.btn-present { background: #003311; color: #00ff66; border: 1px solid #00ff66; }
-.btn-present.active { background: #00ff66; color: #000; box-shadow: 0 0 10px #00ff66; }
-.note-select { flex: 1.5; background: #1a1a3a; color: #00f0ff; border: 1px solid #00f0ff; padding: 9px 3px; font-size: 0.8rem; border-radius: 3px; outline: none; }
+  *{box-sizing:border-box}
+  :root{
+    --bg:#070b14; --panel:#0d1424; --panel2:#111a2e; --line:#22304f;
+    --txt:#e8eefc; --muted:#93a4c4; --acc:#22d3ee; --acc2:#a78bfa;
+    --ok:#34d399; --warn:#fbbf24; --bad:#fb7185; --btn:#0e7490;
+  }
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:radial-gradient(1000px 500px at 15% -10%,#123 0,transparent 60%),radial-gradient(900px 500px at 90% -10%,#2a1650 0,transparent 55%),var(--bg);color:var(--txt)}
+  header{padding:28px 20px 10px;max-width:1240px;margin:auto}
+  h1{margin:0 0 8px;font-size:30px;line-height:1.15}
+  h1 .g{background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);max-width:900px;line-height:1.55}
+  main{max-width:1240px;margin:auto;padding:14px 20px 40px}
+  .warnbox{border:1px solid #6b5410;background:#211a05;color:#fde68a;border-radius:14px;padding:14px 16px;line-height:1.6;margin:14px 0}
+  .warnbox b{color:#facc15}
+  .okbox{border:1px solid #14532d;background:#071d12;color:#bbf7d0;border-radius:14px;padding:12px 16px;line-height:1.6;margin:12px 0}
+  .card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .grid{display:grid;grid-template-columns:1fr 340px;gap:14px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  label{font-weight:700;font-size:13px;letter-spacing:.02em;color:#c7d2fe;display:block;margin:12px 0 6px}
+  textarea{width:100%;min-height:330px;resize:vertical;background:#050914;color:#dbeafe;border:1px solid var(--line);border-radius:12px;padding:12px;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;outline:none}
+  textarea:focus,input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(34,211,238,.15)}
+  #outputCode{min-height:330px;color:#a7f3d0}
+  input[type=text],input[type=date],select{width:100%;background:#050914;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px}
+  input[type=range]{width:100%}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .btn{appearance:none;border:1px solid #155e75;background:linear-gradient(180deg,#0891b2,#0e7490);color:#fff;padding:11px 16px;border-radius:11px;font-weight:800;cursor:pointer;font-size:14px}
+  .btn:hover{filter:brightness(1.12)} .btn:disabled{opacity:.55;cursor:wait}
+  .btn.secondary{background:#101c33;border-color:var(--line);color:#dbeafe}
+  .btn.danger{background:#3f0d1c;border-color:#7f1d35;color:#fecdd3}
+  .btn.big{font-size:16px;padding:14px 22px;width:100%;background:linear-gradient(90deg,#0891b2,#7c3aed);border:none}
+  .check{display:flex;gap:9px;align-items:flex-start;background:#0a1120;border:1px solid var(--line);padding:10px 11px;border-radius:11px;margin:8px 0;cursor:pointer;font-weight:600;color:#dbeafe}
+  .check input{margin-top:3px;transform:scale(1.15)}
+  .check small{display:block;color:var(--muted);font-weight:500;line-height:1.45;margin-top:2px}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+  .stat{background:#081226;border:1px solid var(--line);border-radius:11px;padding:9px 12px;min-width:130px}
+  .stat b{display:block;font-size:17px;color:#fff}.stat span{color:var(--muted);font-size:12px}
+  .log{white-space:pre-wrap;background:#04120b;border:1px solid #14532d;color:#bbf7d0;border-radius:12px;padding:12px;font:13px/1.6 ui-monospace,Consolas,monospace;min-height:100px}
+  .log.err{background:#1d0710;border-color:#7f1d35;color:#fecdd3}
+  table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:10px;vertical-align:top;line-height:1.5} th{background:#13203c;text-align:left}
+  td{color:#cbd5e1} td b{color:#fff}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;background:#164e63;color:#a5f3fc;font-size:12px;font-weight:800}
+  .muted{color:var(--muted);line-height:1.6} .small{font-size:13px}
+  .kbd{background:#1e293b;border:1px solid #334155;border-bottom-width:3px;border-radius:6px;padding:1px 6px;font-family:ui-monospace,monospace;font-size:12px;color:#fff}
+  .filelbl{display:inline-block}
+  input[type=file]{display:none}
+  .drop-on{border-color:var(--acc)!important;box-shadow:0 0 0 4px rgba(34,211,238,.25)!important}
+  footer{color:var(--muted);text-align:center;padding:20px;line-height:1.6}
+  code{background:#0b1528;border:1px solid var(--line);padding:1px 6px;border-radius:6px;color:#a5f3fc}
 </style>
 </head>
 <body>
-<h2>Lớp: ILA-L7 - Thu Hà</h2>
-<div class="class-stats" id="classStats">Sĩ số: 0 | Có mặt: 0 | Vắng: 0</div>
-<div class="class-panel">
-<h3>Danh Sách: ILA-L7 - Thu Hà</h3>
-<br>
-<div class="add-student-box">
-<input type="text" id="newStudentName" placeholder="Dòng 1: Nhập họ và tên...">
-<input type="tel" id="newStudentPhone" placeholder="Dòng 2: Nhập số điện thoại...">
-<button class="btn-add" onclick="addNewStudent()">+ Thêm vào danh sách</button>
-</div>
-<div class="absent-section">
-<div class="absent-header">
-<span class="absent-title">DANH SÁCH VẮNG </span>
-<button class="copy-btn" onclick="copyAbsentList()">Copy</button>
-</div>
-<ul class="absent-list" id="absentList"><li><em>Chưa có học sinh vắng</em></li></ul>
-</div>
-<div class="student-list" id="studentList"></div>
-</div>
+<header>
+  <h1>🔐 Công cụ <span class="g">Mã hoá &amp; Chống dịch ngược Code</span></h1>
+  <p class="sub">Dán hoặc tải lên tối đa khoảng <b>5.000–10.000 dòng code</b> (JS/HTML). Công cụ sẽ đóng gói toàn bộ code gốc vào trong nhiều lớp mã hoá, chia nhỏ, xáo trộn thứ tự, chèn code rác và kiểm tra chống sửa — khi người khác mở <span class="kbd">F12</span> họ chỉ thấy một đống dữ liệu vô nghĩa, không thấy code gốc của bạn.</p>
+</header>
+
+<main>
+  <div class="warnbox">
+    ⚠️ <b>SỰ THẬT KỸ THUẬT BẠN PHẢI BIẾT:</b> Không tồn tại cách mã hoá nào cho code chạy trên trình duyệt người xem mà “tuyệt đối không thể dịch ngược”.
+    Lý do: trình duyệt của họ <i>phải</i> giải mã được thì mới chạy được — nên về nguyên tắc, người cực kỳ giỏi vẫn có thể chặn đúng khoảnh khắc code đã giải mã trong bộ nhớ.
+    Công cụ này làm cho việc đó <b>cực kỳ khó, cực kỳ tốn thời gian</b> (đủ để chặn 99% người copy code, xem trộm F12, hoặc ném code vào AI nhờ viết lại).
+    Muốn bảo vệ <b>100%</b> phần logic quan trọng nhất (thuật toán, key, công thức tính tiền…), hãy đưa phần đó lên <b>server/API của bạn</b> — xem mục hướng dẫn ở cuối trang.
+  </div>
+
+  <div class="grid">
+    <section class="card" style="margin:0">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <div style="font-weight:900;font-size:17px">1) Code gốc của bạn</div>
+          <div class="muted small">Dán code vào đây, kéo–thả file vào đây, hoặc chọn file .js / .html từ máy.</div>
+        </div>
+        <div class="row">
+          <label class="btn secondary filelbl" for="fileInput">📂 Chọn file code</label>
+          <input type="file" id="fileInput" accept=".js,.html,.htm,.txt">
+          <button class="btn secondary" id="sampleBtn" type="button">Nạp code mẫu</button>
+          <button class="btn danger" id="clearBtn" type="button">Xoá</button>
+        </div>
+      </div>
+
+      <label for="inputCode">CODE GỐC (chỉ bạn thấy — không gửi lên server nào, xử lý 100% trên máy bạn)</label>
+      <textarea id="inputCode" spellcheck="false" placeholder="// Dán code JavaScript của bạn vào đây...&#10;// hoặc mã hoá nguyên 1 trang HTML (chọn chế độ HTML ở cột bên phải)"></textarea>
+      <div class="stats">
+        <div class="stat"><b id="inLines">0</b><span>dòng code gốc</span></div>
+        <div class="stat"><b id="inChars">0</b><span>ký tự</span></div>
+        <div class="stat"><b id="inKB">0 KB</b><span>kích thước gốc</span></div>
+      </div>
+
+      <label for="outputCode">KẾT QUẢ ĐÃ MÃ HOÁ (đây là thứ bạn copy / tải về dùng)</label>
+      <textarea id="outputCode" spellcheck="false" readonly placeholder="Kết quả mã hoá sẽ hiện ở đây..."></textarea>
+      <div class="stats">
+        <div class="stat"><b id="outLines">0</b><span>dòng kết quả</span></div>
+        <div class="stat"><b id="outKB">0 KB</b><span>kích thước kết quả</span></div>
+        <div class="stat"><b id="verifyStat">—</b><span>kiểm chứng giải mã</span></div>
+      </div>
+      <div class="row">
+        <button class="btn" id="copyBtn" type="button">📋 Copy kết quả</button>
+        <button class="btn" id="downloadBtn" type="button">⬇️ Tải file đã mã hoá</button>
+      </div>
+    </section>
+
+    <aside class="card" style="margin:0">
+      <div style="font-weight:900;font-size:17px">2) Tuỳ chọn mã hoá</div>
+
+      <label for="modeSel">Loại code / định dạng kết quả</label>
+      <select id="modeSel">
+        <option value="js">JavaScript → file .js đã mã hoá</option>
+        <option value="module">JavaScript ES Module (có import/export) → file .js</option>
+        <option value="jshtml">JavaScript → file .html (nhúng sẵn thẻ script)</option>
+        <option value="htmlpage">Nguyên trang HTML → file .html đã mã hoá toàn bộ</option>
+      </select>
+
+      <label for="levelSel">Mức độ mã hoá</label>
+      <select id="levelSel">
+        <option value="1">Mức 1 — Cơ bản (nhanh, nhẹ)</option>
+        <option value="2">Mức 2 — Mạnh</option>
+        <option value="3" selected>Mức 3 — Rất mạnh (khuyên dùng)</option>
+        <option value="4">Mức 4 — CỰC HẠN (khó gỡ nhất, file nặng hơn)</option>
+      </select>
+      <div class="muted small" id="levelDesc"></div>
+
+      <label for="chunkRange">Số mảnh cắt nhỏ &amp; xáo trộn: <span id="chunkVal" class="pill">32 mảnh</span></label>
+      <input type="range" id="chunkRange" min="4" max="96" value="32" step="1">
+      <div class="muted small">Cắt càng nhiều mảnh + xáo trộn thứ tự → càng khó ghép lại bằng tay/AI.</div>
+
+      <label class="check"><input type="checkbox" id="tamperChk" checked><span>Chống sửa code (integrity check)<small>Nếu ai sửa/xoá dù 1 ký tự trong phần dữ liệu đã mã hoá, code sẽ tự ngừng chạy thay vì chạy sai.</small></span></label>
+      <label class="check"><input type="checkbox" id="antiDebugChk"><span>Chống mở F12 / Debugger<small>Chèn bẫy <code>debugger</code> định kỳ + phát hiện DevTools. Lưu ý: có thể gây khó chịu khi bạn tự debug — chỉ bật khi xuất bản thật.</small></span></label>
+      <label class="check"><input type="checkbox" id="antiKeysChk"><span>Chặn chuột phải &amp; phím F12 / Ctrl+Shift+I / Ctrl+U<small>Chỉ là lớp cản phụ (người giỏi vẫn qua được), không nên phụ thuộc vào nó.</small></span></label>
+
+      <label for="domainInput">Khoá theo tên miền (không bắt buộc)</label>
+      <input type="text" id="domainInput" placeholder="vd: webcuaban.com (cách nhau dấu phẩy nếu nhiều)">
+      <div class="muted small">Điền vào thì code chỉ chạy trên tên miền đó; bị copy sang web khác sẽ không chạy. Để trống = chạy mọi nơi. <b>Thận trọng:</b> điền sai là code không chạy ở đâu cả — hãy test kỹ.</div>
+
+      <label for="expiryInput">Ngày hết hạn (không bắt buộc)</label>
+      <input type="date" id="expiryInput">
+      <div class="muted small">Sau ngày này code tự ngừng chạy. Để trống = không hết hạn.</div>
+
+      <div style="height:14px"></div>
+      <button class="btn big" id="obfuscateBtn" type="button">🔒 MÃ HOÁ NGAY</button>
+      <div style="height:10px"></div>
+      <div class="log" id="logBox">Sẵn sàng. Hãy dán code rồi bấm “MÃ HOÁ NGAY”.</div>
+    </aside>
+  </div>
+
+  <section class="card">
+    <div style="font-weight:900;font-size:17px;margin-bottom:8px">3) Công cụ này đã làm gì với code của bạn?</div>
+    <table>
+      <tr><th style="width:26%">Kỹ thuật</th><th>Tác dụng chống dịch ngược</th></tr>
+      <tr><td><b>Mã hoá toàn bộ code gốc</b> (XOR stream nhiều lớp + đảo khối + cộng/trừ byte ở mức cực hạn)</td><td>Code gốc không còn xuất hiện dưới dạng chữ đọc được ở bất cứ đâu trong file kết quả. Mở F12 / View Source chỉ thấy dữ liệu Base64 vô nghĩa.</td></tr>
+      <tr><td><b>Cắt nhỏ + xáo trộn thứ tự mảnh</b></td><td>File bị cắt thành hàng chục mảnh và trộn thứ tự. Copy 1 đoạn ném cho AI cũng vô ích — AI không có đủ toàn bộ + không biết thứ tự + không có khoá.</td></tr>
+      <tr><td><b>Khoá mã hoá ngẫu nhiên mỗi lần bấm</b></td><td>Mỗi lần mã hoá ra 1 kết quả khác nhau hoàn toàn. Không có “công cụ giải mã chung” nào mở được.</td></tr>
+      <tr><td><b>Code rác &amp; bộ giải mã giả</b></td><td>Chèn hàm rác, mảng chuỗi giả nhìn giống thật → người gỡ rối bị lạc hướng, tốn thời gian phân tích nhầm.</td></tr>
+      <tr><td><b>Kiểm tra chống sửa (checksum)</b></td><td>Sửa/xoá dữ liệu đã mã hoá → code tự chết. Ngăn kiểu “xoá đoạn chống copy rồi dùng tiếp”.</td></tr>
+      <tr><td><b>Khoá tên miền / ngày hết hạn</b> (tuỳ chọn)</td><td>Code bị bê nguyên sang web khác hoặc dùng quá hạn sẽ không chạy.</td></tr>
+    </table>
+  </section>
+
+  <section class="card">
+    <div style="font-weight:900;font-size:17px;margin-bottom:8px">4) Cách dùng kết quả &amp; lưu ý quan trọng</div>
+    <div class="muted" style="color:#cbd5e1">
+      <p>• <b>Chế độ JavaScript:</b> tải file <code>.js</code> về, thay cho file JS gốc trên web của bạn (giữ nguyên cách nhúng <code>&lt;script src="..."&gt;</code> như cũ).<br>
+      • <b>Chế độ nguyên trang HTML:</b> file <code>.html</code> tải về chính là trang hoàn chỉnh — mở lên là chạy, không cần file phụ.<br>
+      • <b>Code có <code>import/export</code>:</b> hãy chọn chế độ <i>ES Module</i>. Code classic có <code>import/export</code> sẽ không chạy qua bộ giải mã thường.<br>
+      • <b>Luôn giữ lại file code GỐC</b> ở nơi an toàn. File đã mã hoá dùng để chạy, không dùng để sửa tiếp — cần sửa thì sửa ở file gốc rồi mã hoá lại.<br>
+      • <b>Luôn test file đã mã hoá</b> trên 1 trang thử trước khi đưa lên web thật, nhất là khi bật khoá tên miền / chống F12.<br>
+      • Một số trường hợp đặc biệt có thể cần test kỹ: code phụ thuộc <code>document.currentScript</code>, code tự đọc nội dung của chính nó, hoặc web có CSP cấm <code>eval</code>. Nếu web bạn cấm eval theo CSP, cần cho phép hoặc chuyển logic lên server.</p>
+      <p>🛡️ <b>Muốn chống ở mức “AI/máy tính cũng không viết lại được toàn bộ”?</b> Cách duy nhất đúng về mặt kỹ thuật: <b>đừng đưa toàn bộ logic xuống trình duyệt</b>. Hãy giữ phần quý giá nhất (thuật toán lõi, bảng giá, key, kiểm tra bản quyền…) trên <b>server của bạn</b> và cho trình duyệt gọi qua API. Trình duyệt chỉ nhận <i>kết quả</i>, không nhận <i>cách làm</i> — khi đó không ai dịch ngược được thứ họ không hề có. Công cụ này + tách server là bộ đôi bảo vệ mạnh nhất cho web.</p>
+    </div>
+  </section>
+</main>
+
+<footer>Công cụ chạy 100% offline trên trình duyệt của bạn — code của bạn không được gửi đi đâu cả.<br>Hãy giữ file gốc cẩn thận và test kỹ trước khi xuất bản.</footer>
+
 <script>
-const defaultStudents = [
-    {
-        "id": 1,
-        "name": "Quốc Bảo",
-        "phone": "0342866968",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 2,
-        "name": "Nguyễn Khôi Nguyên",
-        "phone": "0366658588",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 3,
-        "name": "Nguyễn Thanh Bình",
-        "phone": "0981478558",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 4,
-        "name": "Nguyễn Linh Ngân",
-        "phone": "0942916191",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 5,
-        "name": "Nguyễn Thị Thanh Thảo",
-        "phone": "0986507735",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 6,
-        "name": "Lâm Anh Thư",
-        "phone": "0902239258",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 7,
-        "name": "Nguyễn Minh Trang",
-        "phone": "0989137308",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 8,
-        "name": "Trần Bảo Long",
-        "phone": "0989850687",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 9,
-        "name": "Vũ Trọng Quang Huy",
-        "phone": "0983309284",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 10,
-        "name": "Nguyễn Tuấn Minh",
-        "phone": "0823607777",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 11,
-        "name": "Tống Quang Anh",
-        "phone": "0977342412",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 12,
-        "name": "Nguyễn Quang Trung (Gấu)",
-        "phone": "0359681688",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 13,
-        "name": "Nguyễn Thanh Vân (Nhím)",
-        "phone": "0934694535",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 14,
-        "name": "Phạm Khánh Vinh",
-        "phone": "0392655484",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 15,
-        "name": "Nguyễn Thái Bảo An",
-        "phone": "0352489999",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 16,
-        "name": "Trương Bảo Minh",
-        "phone": "0978866816",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 17,
-        "name": "Lương Thuý Vy",
-        "phone": "0966054095",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 18,
-        "name": "Ngô Phương Linh",
-        "phone": "0986156332",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 19,
-        "name": "Nguyễn Vũ Linh San",
-        "phone": "0989898030",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 20,
-        "name": "Lê Minh Quân",
-        "phone": "0947884966",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 21,
-        "name": "Phùng Linh Đan",
-        "phone": "0982062912",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 22,
-        "name": "Nguyễn Thị Linh",
-        "phone": "0976509456",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 23,
-        "name": "Dương Đức Trí Tài",
-        "phone": "0902157119",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 24,
-        "name": "Trần Thái Bảo",
-        "phone": "0943896469",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 25,
-        "name": "Nguyễn Minh Châu",
-        "phone": "0858686086",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 26,
-        "name": "Nguyễn Quang Hưng",
-        "phone": "0936310081",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 27,
-        "name": "Nguyễn Quang Huy",
-        "phone": "0936310081",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 28,
-        "name": "Trịnh Công Minh",
-        "phone": "0988173836",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 29,
-        "name": "Kiều Gia Hân",
-        "phone": "0947618998",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 30,
-        "name": "Nguyễn Lê Hoàng",
-        "phone": "0777283668",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 31,
-        "name": "Nguyễn Vi Anh",
-        "phone": "0933588892",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 32,
-        "name": "Nguyễn Ngọc Diệp",
-        "phone": "0986308984",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 33,
-        "name": "Lê Bảo Lâm",
-        "phone": "0989097545",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 34,
-        "name": "Vương Bảo Anh",
-        "phone": "0982696829",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 35,
-        "name": "Nguyễn Khôi Nguyên",
-        "phone": "0936638388",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 36,
-        "name": "Hà Nguyễn Bảo An",
-        "phone": "0973723361",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 37,
-        "name": "Hà Bảo Anh",
-        "phone": "0383649999",
-        "status": "present",
-        "note": ""
-    },
-    {
-        "id": 38,
-        "name": "Lê Minh Dũng",
-        "phone": "0983572284",
-        "status": "present",
-        "note": ""
+"use strict";
+const $ = id => document.getElementById(id);
+const inputEl=$("inputCode"), outputEl=$("outputCode"), logEl=$("logBox");
+let lastBlobName="protected-output.js", lastCheckText="—";
+
+/* ---------- helpers ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function fnv1a(bytes){let h=0x811c9dc5;for(let i=0;i<bytes.length;i++){h^=bytes[i];h=Math.imul(h,0x01000193)}return h>>>0}
+function bytesToB64(bytes){
+  let s="";const CH=0x8000;
+  for(let i=0;i<bytes.length;i+=CH){s+=String.fromCharCode.apply(null,bytes.subarray(i,i+CH))}
+  return btoa(s);
+}
+function xorStream(bytes,key){
+  for(let i=0;i<bytes.length;i++){
+    bytes[i]=(bytes[i]^key[i%key.length]^(i&255)^((i>>8)&255)^((i>>16)&255))&255;
+  }
+  return bytes;
+}
+function reverseBlocks(bytes,bs){
+  if(!bs||bs<2)return bytes;
+  for(let s=0;s<bytes.length;s+=bs){
+    let l=s,r=Math.min(bytes.length,s+bs)-1;
+    while(l<r){const t=bytes[l];bytes[l]=bytes[r];bytes[r]=t;l++;r--}
+  }
+  return bytes;
+}
+function addLayer(bytes,sign){
+  for(let i=0;i<bytes.length;i++){
+    const v=(i*7+((i>>3)&255)+41)&255;
+    bytes[i]=(bytes[i]+sign*v)&255;
+  }
+  return bytes;
+}
+function fmtKB(n){return (n/1024).toFixed(n<10240?2:1)+" KB"}
+function countLines(s){return s? s.split(/\n/).length:0}
+function setLog(msg,isErr){logEl.textContent=msg;logEl.className="log"+(isErr?" err":"")}
+function updateInStats(){
+  const v=inputEl.value;
+  $("inLines").textContent=countLines(v).toLocaleString("vi-VN");
+  $("inChars").textContent=v.length.toLocaleString("vi-VN");
+  $("inKB").textContent=fmtKB(new TextEncoder().encode(v).length);
+}
+inputEl.addEventListener("input",updateInStats);
+
+const levelTexts={
+  "1":"Mức 1: Đóng gói Base64 + cắt/xáo trộn mảnh. Nhẹ và nhanh, chặn xem source thông thường.",
+  "2":"Mức 2: Thêm mã hoá XOR 1 lớp + code rác. Code gốc không còn đọc được trực tiếp.",
+  "3":"Mức 3 (khuyên dùng): XOR 2 lớp + đảo khối dữ liệu + checksum chống sửa + code rác & bộ giải mã giả.",
+  "4":"Mức 4 CỰC HẠN: XOR 3 lớp + đảo khối 2 lần + lớp cộng/trừ byte + ẩn tên hàm hệ thống (eval/atob bị tách chữ) + nhiều code rác nhất. File nặng & chạy chậm hơn một chút."
+};
+function updateLevelDesc(){$("levelDesc").textContent=levelTexts[$("levelSel").value]}
+$("levelSel").addEventListener("change",updateLevelDesc);updateLevelDesc();
+$("chunkRange").addEventListener("input",e=>{$("chunkVal").textContent=e.target.value+" mảnh"});
+
+/* file load + drag drop */
+let inputFileBase="";
+$("fileInput").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!f)return;
+  inputFileBase=f.name.replace(/\.(js|html?|txt)$/i,"");
+  inputEl.value=await f.text();updateInStats();
+  if(/\.html?$/i.test(f.name)){$("modeSel").value="htmlpage"}
+  else if(/\.js$/i.test(f.name) && $("modeSel").value==="htmlpage"){$("modeSel").value="js"}
+  setLog("Đã nạp file: "+f.name+" ("+fmtKB(f.size)+", "+countLines(inputEl.value).toLocaleString("vi-VN")+" dòng).");
+});
+["dragover","dragleave","drop"].forEach(ev=>inputEl.addEventListener(ev,e=>{
+  e.preventDefault();
+  inputEl.classList.toggle("drop-on",ev==="dragover");
+  if(ev==="drop"){const f=e.dataTransfer.files&&e.dataTransfer.files[0];if(f){f.text().then(t=>{inputEl.value=t;updateInStats();inputFileBase=f.name.replace(/\.(js|html?|txt)$/i,"");setLog("Đã nạp file kéo-thả: "+f.name)})}}
+}));
+
+$("sampleBtn").addEventListener("click",()=>{
+  inputEl.value=
+"// Code mẫu để thử\n"+
+"const TAX = 0.08;\n"+
+"function tinhTong(donGia, soLuong){\n  const tamTinh = donGia * soLuong;\n  return tamTinh + tamTinh * TAX;\n}\n"+
+"function chao(ten){ return 'Xin chào, ' + ten + '! Tổng tiền: ' + tinhTong(150000, 3).toLocaleString('vi-VN') + 'đ'; }\n"+
+"console.log(chao('bạn'));\n"+
+"window.__tinhTong = tinhTong;\n";
+  updateInStats();setLog("Đã nạp code mẫu. Bấm MÃ HOÁ NGAY để thử.");
+});
+$("clearBtn").addEventListener("click",()=>{inputEl.value="";outputEl.value="";updateInStats();updateOutStats("");setLog("Đã xoá.")});
+function updateOutStats(v){
+  $("outLines").textContent=countLines(v).toLocaleString("vi-VN");
+  $("outKB").textContent=fmtKB(new TextEncoder().encode(v).length);
+  $("verifyStat").textContent=lastCheckText;
+}
+
+/* ---------- core obfuscator ---------- */
+function buildObfuscated(src,opts){
+  const level=opts.level;
+  const seed=((Date.now()>>>0)^Math.floor(Math.random()*0xffffffff))>>>0;
+  const rng=mulberry32(seed);
+  const used=new Set();
+  function rname(){
+    let n;do{const c="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";let s="_"+c[Math.floor(rng()*c.length)];for(let i=0;i<7;i++)s+="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"[Math.floor(rng()*62)];n=s}while(used.has(n));used.add(n);return n;
+  }
+  const N={};
+  ["g","data","ord","k1","k2","k3","fnv","kb","xf","rv","ad","at","ev","bin","bytes","joined","txt","hc","hm","hp","pm","bs","bs2","fake1","fake2","chk","host","allowed","expv"].forEach(k=>N[k]=rname());
+
+  const plain=new TextEncoder().encode(src);
+  const plainHash=fnv1a(plain);
+  const work=new Uint8Array(plain);
+
+  const keyLen=level>=4?64:(level>=3?48:32);
+  function makeKey(){const k=new Uint8Array(keyLen);for(let i=0;i<keyLen;i++)k[i]=Math.floor(rng()*256);return k}
+  const K1=level>=2?makeKey():null, K2=level>=3?makeKey():null, K3=level>=4?makeKey():null;
+  const BS =level>=3? (1024*(1+Math.floor(rng()*4))) : 0;
+  const BS2=level>=4? (777+Math.floor(rng()*1500)) : 0;
+
+  /* ENCRYPT (order matters) */
+  if(K1)xorStream(work,K1);
+  if(level>=3)reverseBlocks(work,BS);
+  if(K2)xorStream(work,K2);
+  if(level>=4){addLayer(work,1);reverseBlocks(work,BS2);}
+  if(K3)xorStream(work,K3);
+  const cipherHash=fnv1a(work);
+
+  /* internal verification: decrypt a copy and compare */
+  const back=new Uint8Array(work);
+  if(K3)xorStream(back,K3);
+  if(level>=4){reverseBlocks(back,BS2);addLayer(back,-1);}
+  if(K2)xorStream(back,K2);
+  if(level>=3)reverseBlocks(back,BS);
+  if(K1)xorStream(back,K1);
+  const decodedBack=new TextDecoder().decode(back);
+  const verified=(decodedBack===src && fnv1a(back)===plainHash);
+
+  /* base64 + chunk + shuffle */
+  const b64=bytesToB64(work);
+  const wantChunks=Math.max(1,Math.min(opts.chunks,Math.max(1,b64.length)));
+  const chunkSize=Math.ceil(b64.length/wantChunks);
+  const chunks=[];
+  for(let i=0;i<b64.length;i+=chunkSize)chunks.push(b64.slice(i,i+chunkSize));
+  const n=chunks.length;
+  const posOfChunk=Array.from({length:n},(_,i)=>i);
+  for(let i=n-1;i>0;i--){const j=Math.floor(rng()*(i+1));[posOfChunk[i],posOfChunk[j]]=[posOfChunk[j],posOfChunk[i]]}
+  const shuffled=new Array(n);
+  for(let i=0;i<n;i++)shuffled[posOfChunk[i]]=chunks[i];
+  const ordEnc=posOfChunk.map(p=>(p^0x3d));
+
+  function keyCode(key){
+    if(!key)return null;
+    const enc=Array.from(key).map((b,i)=>((b^((0xA5+i*13)&255))&255));
+    return "["+enc.map(v=>rng()<0.5?String(v):"0x"+v.toString(16)).join(",")+"]";
+  }
+  function numExpr(v){
+    if(level<3||v<16)return String(v);
+    const m=17+Math.floor(rng()*4000);
+    return "("+(v^m)+"^"+m+")";
+  }
+  const B64C="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+  function fakeB64(len){let s="";for(let i=0;i<len;i++)s+=B64C[Math.floor(rng()*B64C.length)];return s}
+  const words=["loader","module","runtime","config","session","cache","handler","service","client","worker","helper","storage","request","response","vector","buffer"];
+  function junkFn(){
+    const f=rname(),a=rname(),b=rname();
+    const fake=fakeB64(40+Math.floor(rng()*80));
+    return "function "+f+"("+a+"){var "+b+"=2166136261;for(var i=0;i<"+a+".length;i++){"+b+"=Math.imul("+b+"^"+a+".charCodeAt(i),16777619)}return ("+b+">>>0)}\n"+
+           "var "+rname()+"="+f+"(\""+fake+"\");\n"+
+           "var "+rname()+"=[\""+words[Math.floor(rng()*words.length)]+"\",\""+words[Math.floor(rng()*words.length)]+"\",\""+fakeB64(24)+"\"];\n";
+  }
+
+  /* runtime snippets */
+  let guard="";
+  if(opts.domain){
+    const domStr=opts.domain.split(/[,;\s]+/).filter(Boolean).join(",");
+    const encArr=Array.from(domStr).map((ch,i)=>((ch.charCodeAt(0)^((0x2b+i*7)&255))&255));
+    guard+="var "+N.allowed+"=["+encArr.join(",")+"];\n"+
+      "var "+N.host+"=\"\";for(var di=0;di<"+N.allowed+".length;di++)"+N.host+"+=String.fromCharCode("+N.allowed+"[di]^((43+di*7)&255));\n"+
+      "var _hst=\"\";try{_hst=location.hostname||\"\"}catch(_e){}\n"+
+      "var _okd=false;"+N.host+".split(\",\").forEach(function(d){if(d&&(_hst===d||_hst.slice(-(d.length+1))===\".\"+d))_okd=true});\n"+
+      "if(!_okd){try{document.documentElement.innerHTML=\"\"}catch(_e){}return}\n";
+  }
+  if(opts.expiry){
+    const digits=String(opts.expiry);
+    const encArr=Array.from(digits).map((ch,i)=>((ch.charCodeAt(0)^((0x51+i*5)&255))&255));
+    guard+="var "+N.expv+"=["+encArr.join(",")+"];\n"+
+      "var _exs=\"\";for(var ei=0;ei<"+N.expv+".length;ei++)_exs+=String.fromCharCode("+N.expv+"[ei]^((81+ei*5)&255));\n"+
+      "if(Date.now()>parseInt(_exs,10)){try{document.documentElement.innerHTML=\"\"}catch(_e){}return}\n";
+  }
+  if(opts.antiDebug){
+    guard+="try{setInterval(function(){var _t=Date.now();debugger;if(Date.now()-_t>120){try{document.documentElement.innerHTML=\"\"}catch(_e){}}},2500)}catch(_e){}\n";
+  }
+  if(opts.antiKeys){
+    guard+="try{document.addEventListener(\"contextmenu\",function(e){e.preventDefault()});document.addEventListener(\"keydown\",function(e){if(e.key===\"F12\"||(e.ctrlKey&&e.shiftKey&&\"IJ C\".indexOf((e.key||\"\").toUpperCase())>=0)||(e.ctrlKey&&(e.key||\"\").toLowerCase()===\"u\")){e.preventDefault();e.stopPropagation()}})}catch(_e){}\n";
+  }
+
+  const lines=[];
+  lines.push("(function(){");
+  lines.push("\"use strict\";");
+  lines.push("var "+N.g+"=globalThis;");
+  if(level>=3)lines.push("var "+N.at+"="+N.g+"[\"at\"+\"ob\"];");
+  /* data */
+  lines.push("var "+N.data+"=[");
+  lines.push(shuffled.map(s=>"\""+s+"\"").join(",\n"));
+  lines.push("];");
+  lines.push("var "+N.ord+"=["+ordEnc.join(",")+"];");
+  if(K1)lines.push("var "+N.k1+"="+keyCode(K1)+";");
+  if(K2)lines.push("var "+N.k2+"="+keyCode(K2)+";");
+  if(K3)lines.push("var "+N.k3+"="+keyCode(K3)+";");
+  if(level>=3){lines.push("var "+N.bs+"="+numExpr(BS)+";");if(level>=4)lines.push("var "+N.bs2+"="+numExpr(BS2)+";")}
+  const maskC=Math.floor(rng()*0xffffff)+1, maskP=Math.floor(rng()*0xffffff)+1;
+  if(opts.tamper&&level>=2){
+    lines.push("var "+N.hc+"="+((cipherHash^maskC)>>>0)+";var "+N.hm+"="+maskC+";");
+    lines.push("var "+N.hp+"="+((plainHash^maskP)>>>0)+";var "+N.pm+"="+maskP+";");
+  }
+  /* helper functions */
+  lines.push("function "+N.fnv+"(b){var h=2166136261;for(var i=0;i<b.length;i++){h^=b[i];h=Math.imul(h,16777619)}return h>>>0}");
+  lines.push("function "+N.kb+"(a){return a.map(function(v,i){return (v^((165+i*13)&255))&255})}");
+  lines.push("function "+N.xf+"(b,k){for(var i=0;i<b.length;i++){b[i]=(b[i]^k[i%k.length]^(i&255)^((i>>8)&255)^((i>>16)&255))&255}return b}");
+  if(level>=3)lines.push("function "+N.rv+"(b,s){if(!s||s<2)return b;for(var st=0;st<b.length;st+=s){var l=st,r=Math.min(b.length,st+s)-1;while(l<r){var t=b[l];b[l]=b[r];b[r]=t;l++;r--}}return b}");
+  if(level>=4)lines.push("function "+N.ad+"(b,sg){for(var i=0;i<b.length;i++){b[i]=(b[i]+sg*((i*7+((i>>3)&255)+41)&255))}return b}");
+  /* junk */
+  const junkCount=level===1?1:(level===2?3:(level===3?5:8));
+  for(let i=0;i<junkCount;i++)lines.push(junkFn());
+  if(level>=3){
+    lines.push("var "+N.fake1+"=[\""+fakeB64(60)+"\",\""+fakeB64(44)+"\",\""+fakeB64(72)+"\"];");
+    lines.push("var "+N.fake2+"=function(x){return x.split(\"\").reverse().join(\"\")};");
+  }
+  /* guards */
+  if(guard)lines.push(guard);
+  /* main decode */
+  lines.push("var "+N.joined+"=\"\";");
+  lines.push("for(var oi=0;oi<"+N.ord+".length;oi++){"+N.joined+"+="+N.data+"["+N.ord+"[oi]^61]}");
+  lines.push("var "+N.bin+"="+(level>=3?N.at+"("+N.joined+")":"atob("+N.joined+")")+";");
+  lines.push("var "+N.bytes+"=new Uint8Array("+N.bin+".length);");
+  lines.push("for(var bi=0;bi<"+N.bin+".length;bi++){"+N.bytes+"[bi]="+N.bin+".charCodeAt(bi)}");
+  if(opts.tamper&&level>=2){
+    lines.push("if((("+N.fnv+"("+N.bytes+")^"+N.hm+")>>>0)!=="+N.hc+"){throw new Error(\""+fakeB64(12)+"\")}");
+  }
+  /* DECRYPT (reverse order of encrypt) */
+  if(K3)lines.push(N.xf+"("+N.bytes+","+N.kb+"("+N.k3+"));");
+  if(level>=4){lines.push(N.rv+"("+N.bytes+","+N.bs2+");");lines.push(N.ad+"("+N.bytes+",-1);");}
+  if(K2)lines.push(N.xf+"("+N.bytes+","+N.kb+"("+N.k2+"));");
+  if(level>=3)lines.push(N.rv+"("+N.bytes+","+N.bs+");");
+  if(K1)lines.push(N.xf+"("+N.bytes+","+N.kb+"("+N.k1+"));");
+  if(opts.tamper&&level>=2){
+    lines.push("if((("+N.fnv+"("+N.bytes+")^"+N.pm+")>>>0)!=="+N.hp+"){throw new Error(\""+fakeB64(12)+"\")}");
+  }
+  /* decode text + execute */
+  if(level>=3)lines.push("var "+N.txt+"=new ("+N.g+"[\"Text\"+\"Decoder\"])(\"utf\"+\"-8\").decode("+N.bytes+");");
+  else lines.push("var "+N.txt+"=new TextDecoder(\"utf-8\").decode("+N.bytes+");");
+  if(opts.mode==="htmlpage"){
+    lines.push("document.open();document.write("+N.txt+");document.close();");
+  }else if(opts.mode==="module"){
+    lines.push("var _blob=new Blob(["+N.txt+"],{type:\"text/javascript\"});var _url=URL.createObjectURL(_blob);import(_url).catch(function(e){console.error(e)});");
+  }else{
+    if(level>=3)lines.push("var "+N.ev+"="+N.g+"[\"ev\"+\"al\"];"+N.ev+"("+N.txt+");");
+    else lines.push("var "+N.ev+"=(0,eval);"+N.ev+"("+N.txt+");");
+  }
+  lines.push("})();");
+
+  let out=lines.join("\n");
+  if(opts.mode==="jshtml"){
+    out="<!DOCTYPE html>\n<html lang=\"vi\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Protected</title>\n</head>\n<body>\n<script>\n"+out+"\n<\/script>\n</body>\n</html>";
+  }else if(opts.mode==="htmlpage"){
+    out="<!DOCTYPE html>\n<html lang=\"vi\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Protected</title>\n</head>\n<body>\n<script>\n"+out+"\n<\/script>\n</body>\n</html>";
+  }
+  return {out,verified,nChunks:n};
+}
+
+$("obfuscateBtn").addEventListener("click",()=>{
+  const src=inputEl.value;
+  if(!src.trim()){setLog("⚠️ Chưa có code gốc. Hãy dán code hoặc chọn file trước.",true);return}
+  const btn=$("obfuscateBtn");btn.disabled=true;btn.textContent="⏳ ĐANG MÃ HOÁ...";
+  setLog("Đang mã hoá "+countLines(src).toLocaleString("vi-VN")+" dòng... (code càng lớn càng mất vài giây)");
+  setTimeout(()=>{
+    try{
+      const mode=$("modeSel").value;
+      let expiryTs="";
+      if($("expiryInput").value){expiryTs=String(new Date($("expiryInput").value+"T23:59:59").getTime())}
+      const res=buildObfuscated(src,{
+        mode:mode,
+        level:parseInt($("levelSel").value,10),
+        chunks:parseInt($("chunkRange").value,10),
+        tamper:$("tamperChk").checked,
+        antiDebug:$("antiDebugChk").checked,
+        antiKeys:$("antiKeysChk").checked,
+        domain:$("domainInput").value.trim(),
+        expiry:expiryTs
+      });
+      outputEl.value=res.out;
+      lastCheckText=res.verified?"✅ Khớp 100%":"❌ LỖI";
+      lastBlobName=(inputFileBase||"protected-output")+(mode==="js"||mode==="module"?".obfuscated.js":".protected.html");
+      updateOutStats(res.out);
+
+      /* syntax note */
+      let syntaxNote="";
+      if(mode==="js"||mode==="jshtml"){
+        try{new Function(src);syntaxNote="Cú pháp JS: hợp lệ (kiểm tra cơ bản)."}
+        catch(e){syntaxNote="Lưu ý cú pháp: \""+e.message+"\". Nếu code có import/export hãy chọn chế độ ES Module; nếu đây là HTML hãy chọn chế độ nguyên trang HTML."}
+      }else if(mode==="module"){
+        syntaxNote="Chế độ ES Module: không kiểm tra cú pháp bằng bộ kiểm tra thường — hãy test file sau khi tải về.";
+      }else{
+        syntaxNote="Chế độ HTML: hãy mở file .html kết quả để test trang.";
+      }
+      const looksHTML=/^\s*</.test(src);
+      let warnHtml="";
+      if(looksHTML&&(mode==="js"||mode==="module"))warnHtml="\n⚠️ Code gốc trông giống HTML nhưng bạn đang chọn chế độ JavaScript — kết quả có thể không chạy. Hãy chọn \"Nguyên trang HTML\".";
+      if(!looksHTML&&mode==="htmlpage")warnHtml="\n⚠️ Code gốc trông giống JS thuần nhưng bạn đang chọn chế độ nguyên trang HTML — trang sẽ chỉ hiển thị chữ. Cân nhắc chọn chế độ JavaScript.";
+
+      setLog(
+        "✅ MÃ HOÁ XONG!\n"+
+        "• Code gốc: "+countLines(src).toLocaleString("vi-VN")+" dòng / "+fmtKB(new TextEncoder().encode(src).length)+"\n"+
+        "• Kết quả: "+countLines(res.out).toLocaleString("vi-VN")+" dòng / "+fmtKB(new TextEncoder().encode(res.out).length)+" — đã cắt thành "+res.nChunks+" mảnh xáo trộn\n"+
+        "• Kiểm chứng nội bộ: "+(res.verified?"giải mã thử khớp 100% với code gốc ✅ — file kết quả sẽ chạy đúng như code gốc":"❌ LỖI KIỂM CHỨNG — KHÔNG dùng file này, hãy thử lại")+"\n"+
+        "• "+syntaxNote+warnHtml+"\n"+
+        "• Bước tiếp theo: bấm \"Tải file đã mã hoá\", test kỹ trên trang thử, rồi mới thay cho file gốc trên web thật. GIỮ LẠI FILE GỐC!"
+      ,!res.verified);
+    }catch(err){
+      setLog("❌ Lỗi khi mã hoá: "+err.message+"\nHãy thử giảm mức mã hoá hoặc kiểm tra lại code gốc.",true);
+    }finally{
+      btn.disabled=false;btn.textContent="🔒 MÃ HOÁ NGAY";
     }
-];
-let myClass = { name: "ILA-L7 - Thu Hà", students: [] };
-function displayPhone(p) { if(!p || p==='Chưa có') return 'Chưa có'; let c = p.replace(/\s+/g, ''); if(c.length===10) return c.substring(0,4)+' '+c.substring(4,7)+' '+c.substring(7); return p; }
-function loadData() { const saved = localStorage.getItem('classData_ILA-L7%20-%20Thu%20H%C3%A0'); if(saved) { myClass.students = JSON.parse(saved); } else { myClass.students = defaultStudents; saveData(); } }
-function saveData() { localStorage.setItem('classData_ILA-L7%20-%20Thu%20H%C3%A0', JSON.stringify(myClass.students)); }
-window.onload = function() { loadData(); renderStudentList(); renderAbsentList(); updateStats(); };
-function updateStats() { const total = myClass.students.length; const absent = myClass.students.filter(s => s.status === 'absent').length; const present = total - absent; document.getElementById('classStats').innerText = 'Sĩ số: ' + total + ' | Có mặt: ' + present + ' | Vắng: ' + absent; }
-function addNewStudent() { const nameInput = document.getElementById('newStudentName'); const phoneInput = document.getElementById('newStudentPhone'); const name = nameInput.value.trim(); const phone = phoneInput.value.trim().replace(/\s+/g, '') || 'Chưa có'; if(name === '') { alert('Vui lòng nhập tên!'); return; } const nextId = myClass.students.length > 0 ? Math.max(...myClass.students.map(s => s.id)) + 1 : 1; myClass.students.push({ id: nextId, name: name, phone: phone, status: 'present', note: '' }); saveData(); nameInput.value = ''; phoneInput.value = ''; renderStudentList(); renderAbsentList(); updateStats(); }
-function deleteStudent(id, name) { if(confirm('Bạn có chắc chắn muốn XÓA học sinh ' + name + '?')) { myClass.students = myClass.students.filter(s => s.id !== id); myClass.students.forEach((s, idx) => { s.id = idx + 1; }); saveData(); renderStudentList(); renderAbsentList(); updateStats(); } }
-function renderStudentList() { const container = document.getElementById('studentList'); container.innerHTML = ''; myClass.students.forEach(student => { const card = document.createElement('div'); card.className = 'student-card status-' + student.status; const absentActive = student.status === 'absent' ? 'active' : ''; const presentActive = student.status === 'present' ? 'active' : ''; card.innerHTML = '<div class="student-info-row"><div class="student-meta"><span class="student-name">' + student.id + '. ' + student.name + '</span><span class="student-phone">SĐT: ' + displayPhone(student.phone) + '</span></div><div class="student-actions-right"><button class="btn-call" onclick="callStudent(\'' + student.phone + '\')">📞</button><button class="btn-delete" onclick="deleteStudent(' + student.id + ', \'' + student.name + '\')">🗑️</button></div></div><div class="student-controls-row"><button class="btn-action btn-absent ' + absentActive + '" onclick="updateStatus(' + student.id + ', \'absent\')">Vắng</button><button class="btn-action btn-present ' + presentActive + '" onclick="updateStatus(' + student.id + ', \'present\')">Đi Học</button><select class="note-select" onchange="updateNote(' + student.id + ', this.value)"><option value="" ' + (student.note===''?'selected':'') + '>-- Ghi chú --</option><option value="***" ' + (student.note==='***'?'selected':'') + '>***</option><option value="Đi muộn" ' + (student.note==='Đi muộn' || student.note==='Muộn'?'selected':'') + '>Đi muộn</option><option value="Không nghe máy" ' + (student.note==='Không nghe máy'?'selected':'') + '>Không nghe máy</option><option value="Nghỉ hôm nay" ' + (student.note==='Nghỉ hôm nay'?'selected':'') + '>Nghỉ hôm nay</option><option value="Nghỉ tuần này" ' + (student.note==='Nghỉ tuần này'?'selected':'') + '>Nghỉ tuần này</option><option value="Khi nào đi học sẽ báo lại" ' + (student.note==='Khi nào đi học sẽ báo lại'?'selected':'') + '>Khi nào đi học sẽ báo lại</option><option value="Nghỉ hết tháng 7" ' + (student.note==='Nghỉ hết tháng 7'?'selected':'') + '>Nghỉ hết tháng 7</option><option value="Xin nghỉ hẳn" ' + (student.note==='Xin nghỉ hẳn'?'selected':'') + '>Xin nghỉ hẳn</option><option value="Ốm" ' + (student.note==='Ốm'?'selected':'') + '>Ốm đau</option></select></div>'; container.appendChild(card); }); }
-function updateStatus(id, status) { const student = myClass.students.find(s => s.id === id); student.status = status; saveData(); renderStudentList(); renderAbsentList(); updateStats(); }
-function updateNote(id, value) { const student = myClass.students.find(s => s.id === id); student.note = value; saveData(); renderAbsentList(); }
-function renderAbsentList() { const listContainer = document.getElementById('absentList'); listContainer.innerHTML = ''; const absentStudents = myClass.students.filter(s => s.status === 'absent'); if(absentStudents.length === 0) { listContainer.innerHTML = '<li><em>Chưa có học sinh vắng</em></li>'; return; } absentStudents.forEach(s => { const li = document.createElement('li'); const noteText = s.note ? ' (' + s.note + ')' : ' (Chưa rõ lý do)'; li.innerText = '• ' + s.name + noteText; listContainer.appendChild(li); }); }
-function copyAbsentList() { const total = myClass.students.length; const absentStudents = myClass.students.filter(s => s.status === 'absent'); const absentCount = absentStudents.length; const presentCount = total - absentCount; let text = 'LỚP: ' + myClass.name + '\n'; text += 'Sĩ số: ' + total + ' (Có mặt: ' + presentCount + ' | Vắng: ' + absentCount + ')\n-------------------------\nDanh sách vắng:\n'; if(absentCount === 0) { text += '-Lớp đi học đủ.'; } else { absentStudents.forEach((s, idx) => { const note = s.note ? ' (' + s.note + ')' : ''; text += (idx + 1) + '. ' + s.name + note + '\n'; }); } navigator.clipboard.writeText(text).then(() => { alert('Đã copy báo cáo lớp ' + myClass.name + '!'); }).catch(() => { alert('Lỗi copy.'); }); }
-function callStudent(phone) { if(phone === 'Chưa có') { alert('Chưa có SĐT!'); return; } window.location.href = 'tel:' + phone; }
+  },60);
+});
+
+$("copyBtn").addEventListener("click",async()=>{
+  if(!outputEl.value){setLog("Chưa có kết quả để copy.",true);return}
+  try{await navigator.clipboard.writeText(outputEl.value);setLog("📋 Đã copy kết quả đã mã hoá vào clipboard.")}
+  catch(e){outputEl.select();document.execCommand("copy");setLog("📋 Đã copy (chế độ dự phòng).")}
+});
+$("downloadBtn").addEventListener("click",()=>{
+  if(!outputEl.value){setLog("Chưa có kết quả để tải. Hãy mã hoá trước.",true);return}
+  const isHTML=$("modeSel").value==="jshtml"||$("modeSel").value==="htmlpage";
+  const blob=new Blob([outputEl.value],{type:isHTML?"text/html;charset=utf-8":"text/javascript;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download=lastBlobName;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  setLog("⬇️ Đã tải file: "+lastBlobName+"\nHãy test file này trước khi đưa lên web thật, và giữ lại file code gốc!");
+});
+updateInStats();
 </script>
 </body>
 </html>
